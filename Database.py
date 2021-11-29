@@ -59,7 +59,7 @@ def create_tables(connection):
     drugUsage VARCHAR(255),
     lastTattooDate DATE,
     medicationHistory VARCHAR(255),
-    lastDonaitonTime TIME,
+    lastDonaitonTime DATE,
     phoneNumber VARCHAR(10),
     email VARCHAR(255),
     region VARCHAR(255),
@@ -94,7 +94,7 @@ def create_tables(connection):
     organ_table = """
     CREATE TABLE IF NOT EXISTS Organ (
 	organ_ID INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255),
+    organ_name VARCHAR(255),
     shelfLife INT,
     availablityDate DATE
     );
@@ -137,9 +137,63 @@ def drop_tables(connection):
     execute_query(connection, "DROP TABLE Organ")
     execute_query(connection, "DROP TABLE Hospital")
 
+def read_query(connection, query):
+    cursor = connection.cursor()
+    result = None
+    try:
+        cursor.execute(query)
+        result = cursor.fetchall()
+        return result
+    except Error as e:
+        print(f"Error: '{e}'")
+
+def delete_from_table(connection, table, id):
+    deleting = """
+    DELETE FROM {} WHERE {}_ID = {}
+    """.format(table, table.lower(), id)
+    execute_query(connection, deleting)
+
+def add_donor(connection, blood_type, age, chronice_disease, drug_usage, last_tattoo_date, medication_history, last_donation, phone_number, email, region, donor_type):
+    donor_insertion = """
+    INSERT INTO Donor VALUES
+    (NULL, '{}', {}, '{}', '{}', {}, '{}', {}, '{}', '{}', '{}', '{}')
+    """.format(blood_type, age, chronice_disease, drug_usage, last_tattoo_date, medication_history, last_donation, phone_number, email, region, donor_type)
+    execute_query(connection, donor_insertion)
+
+def add_hospital(connection, hospital_name, region, cost):
+    hospital_insertion = """
+    INSERT INTO Hospital VALUES
+    (NULL, '{}', '{}', {})
+    """.format(hospital_name, region, cost)
+    execute_query(connection, hospital_insertion)
+
+def add_patient(connection, patient_name, blood_type, age, needs, region, phone_number, email, waitlist_position):
+    patient_insertion = """
+    INSERT INTO Patient VALUES
+    (NULL, '{}', '{}', {}, '{}', '{}', '{}', '{}', {})
+    """.format(patient_name, blood_type, age, needs, region, phone_number, email, waitlist_position)
+    execute_query(connection, patient_insertion)
+
+def add_doctor(connection, doctor_name, specialization, fee, region, email, phone_number):
+    doctor_insertion = """
+    INSERT INTO Doctor VALUES
+    (NULL, '{}', '{}', {}, '{}', '{}', '{}')
+    """.format(doctor_name, specialization, fee, region, email, phone_number)
+    execute_query(connection, doctor_insertion)
+
+def add_organ(connection, organ_name, shelf_life, availablity_date):
+    organ_insertion = """
+    INSERT INTO Organ VALUES
+    (NULL, '{}', {}, {})
+    """.format(organ_name, shelf_life, availablity_date)
+    execute_query(connection, organ_insertion)
+
 server_connection_first()
 connection = server_connection()
 create_database(connection)
 create_tables(connection)
 #populate_tables(connection)
+results = read_query(connection, "SELECT * FROM Hospital")
+for result in results:
+    print (result)
 #drop_tables(connection)
