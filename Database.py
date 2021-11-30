@@ -354,11 +354,105 @@ def operations_report(connection):
     """
     return read_query(connection, operations_report)
 
+#User Creation and Privileges
+def doctor_user (connection):
+    user_query="""
+    CREATE USER IF NOT EXISTS 'doctor'@'localhost' IDENTIFIED BY 'doctorPassword';
+    """
+    privone_query="""
+    GRANT ALL PRIVILEGES ON Donor TO doctor@localhost;
+    """
+    privtwo_query="""
+    GRANT ALL PRIVILEGES ON Patient TO doctor@localhost;
+    """
+    privthree_query="""
+    GRANT ALL PRIVILEGES ON Organ TO doctor@localhost;
+    """
+    execute_query(connection, user_query)
+    execute_query(connection, privone_query)
+    execute_query(connection, privtwo_query)
+    execute_query(connection, privthree_query)
+
+def patient_user (connection):
+    user_query="""
+    CREATE USER IF NOT EXISTS 'patient'@'localhost' IDENTIFIED BY 'patientPassword';
+    """
+    privone_query="""
+    GRANT ALL PRIVILEGES ON Donor TO patient@localhost;
+    """
+    execute_query(connection, user_query)
+    execute_query(connection, privone_query)
+
+def admin_user (connection):
+    user_query="""
+    CREATE USER IF NOT EXISTS 'admin'@'localhost' IDENTIFIED BY 'adminPassword';
+    """
+    privone_query="""
+    GRANT ALL PRIVILEGES ON Donor TO admin@localhost;
+    """
+    privtwo_query="""
+    GRANT ALL PRIVILEGES ON Patient TO admin@localhost;
+    """
+    privthree_query="""
+    GRANT ALL PRIVILEGES ON Organ TO admin@localhost;
+    """
+    privfour_query="""
+    GRANT ALL PRIVILEGES ON Doctor TO admin@localhost;
+    """
+    privfive_query="""
+    GRANT ALL PRIVILEGES ON Hospital TO admin@localhost;
+    """
+    execute_query(connection, user_query)
+    execute_query(connection, privone_query)
+    execute_query(connection, privtwo_query)
+    execute_query(connection, privthree_query)
+    execute_query(connection, privfour_query)
+    execute_query(connection, privfive_query)
+
+def input_user (connection, username, password):
+    user_query="""
+    CREATE USER IF NOT EXISTS '{}'@'localhost' IDENTIFIED BY '{}';
+    """.format(username, password)
+    execute_query(connection, user_query)   
+
+def input_doctor_privilege (connection, username):
+    priv_query="""
+    GRANT ALL PRIVILEGES ON Doctor TO {}@localhost;
+    """.format(username)
+    execute_query(connection, priv_query)
+
+def input_donor_privilege (connection, username):
+    priv_query="""
+    GRANT ALL PRIVILEGES ON Donor TO {}@localhost;
+    """.format(username)
+    execute_query(connection, priv_query)
+
+def input_hospital_privilege (connection, username):
+    priv_query="""
+    GRANT ALL PRIVILEGES ON Hospital TO {}@localhost;
+    """.format(username)
+    execute_query(connection, priv_query)    
+
+def input_organ_privilege (connection, username):
+    priv_query="""
+    GRANT ALL PRIVILEGES ON Organ TO {}@localhost;
+    """.format(username)
+    execute_query(connection, priv_query)
+
+def input_patient_privilege (connection, username):
+    priv_query="""
+    GRANT ALL PRIVILEGES ON Patient TO {}@localhost;
+    """.format(username)
+    execute_query(connection, priv_query)
+
 server_connection_first()
 connection = server_connection()
 create_database(connection)
 create_tables(connection)
 #populate_tables(connection)
+doctor_user(connection)
+patient_user(connection)
+admin_user(connection)
 results = blooddonor_matchlist(connection)
 for result in results:
     print (result)
