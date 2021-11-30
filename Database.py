@@ -312,10 +312,28 @@ def blood_age(connection, min, max):
     return read_query(connection, blood_age_query)
 
 #3. Donor Match List
+#Organ matching between patient and donor based on requirements
+def organdonor_matchlist(connection):
+    matchlist_query = """
+    SELECT Donor.donor_ID as donorID, Donor.bloodType as bloodType, Donor.organs as organs, Donor.region as region, Patient.patient_ID as patientID, Patient.patient_name as patientName
+    FROM Donor
+    INNER JOIN Patient on (Donor.bloodType = Patient.bloodType OR Donor.bloodType = "O" OR Patient.bloodType = "AB") AND (Donor.organs = Patient.needs) AND (Donor.region = Patient.region)
+    ORDER BY region;
+    """
+    return read_query(connection, matchlist_query)
+#Blood matching between patient and donor based on requirements
+def blooddonor_matchlist(connection):
+    matchlist_query = """
+    SELECT Donor.donor_ID as donorID, Donor.bloodType as bloodType, Donor.region as region, Patient.patient_ID as patientID, Patient.patient_name as patientName
+    FROM Donor
+    INNER JOIN Patient on (Donor.bloodType = Patient.bloodType OR Donor.bloodType = "O" OR Patient.bloodType = "AB") AND (Donor.region = Patient.region)
+    ORDER BY region;
+    """
+    return read_query(connection, matchlist_query)
 
 #4. Income Report
 #Just use the all_hospitals(connection) as it will return all the information on the hospital
-#
+
 def hospital_update_income(connection, id, amount):
     update = """
     UPDATE hospital SET cost = {} WHERE hospital_id = {};
@@ -327,15 +345,21 @@ def hospital_update_income(connection, id, amount):
         print('Query successful')
     except Error as e:
         print(f"Error: '{e}'")
-#5. Operations Report
 
+#5. Operations Report
+def operations_report(connection):
+    operations_report = """
+    SELECT doctor_name, region, operations FROM Doctor
+    ORDER BY region ASC, operations DESC;
+    """
+    return read_query(connection, operations_report)
 
 server_connection_first()
 connection = server_connection()
 create_database(connection)
 create_tables(connection)
 #populate_tables(connection)
-results = all_hospitals(connection)
+results = blooddonor_matchlist(connection)
 for result in results:
     print (result)
 #drop_tables(connection)
