@@ -186,16 +186,16 @@ def addNewPatient(root):
     root.destroy()
     root=Tk()
 
-    patientName = str
-    patientBloodType = str
-    patientAge = int
-    patientNeeds = str
-    patientRegion = str
-    patientPhoneNo = str
-    patientEmail = str
-    patientUsername = str
-    patientPassword = str
-    patientConfirmPassword = str
+    patientName = StringVar()
+    patientBloodType = StringVar()
+    patientAge = IntVar()
+    patientNeeds = StringVar()
+    patientRegion = StringVar()
+    patientPhoneNo = StringVar()
+    patientEmail = StringVar()
+    patientUsername = StringVar()
+    patientPassword = StringVar()
+    patientConfirmPassword = StringVar()
 
     Label(root, text='Add new Patient').grid(columnspan=2, row=0)
     Label(root, text='Name ').grid(row=1, column=0, sticky='e')
@@ -208,6 +208,7 @@ def addNewPatient(root):
     Label(root, text='Username ').grid(row=9, column=0, sticky='e')
     Label(root, text='Password ').grid(row=10, column=0, sticky='e')
     Label(root, text='Confirm Password ').grid(row=11, column=0, sticky='e')
+    Label(root, text='Create a Username and Password').grid(columnspan=2, row=8)
 
     entryName = Entry(root, textvariable=patientName).grid(row=1, column=1)
     entryBloodType = Entry(root, textvariable=patientBloodType).grid(row=2, column=1)
@@ -224,13 +225,20 @@ def addNewPatient(root):
     patientWaitlistPos = waitlist_position(connection)[0][0] + 1
 
     # Back Button
-    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=8,column=0)
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=12,column=0)
 
-    submit = Button(root, text="Submit", command=lambda:submitNewPatient(root, patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitlistPos)).grid(row=8,column=1)
+    submit = Button(root, text="Submit", command=lambda:submitNewPatient(root, patientName.get(), patientBloodType.get(), patientAge.get(), patientNeeds.get(), patientRegion.get(), patientPhoneNo.get(), patientEmail.get(), patientWaitlistPos, patientUsername.get(), patientPassword.get(), patientConfirmPassword.get(), entryUsername, entryPassword, entryConfirmPassword)).grid(row=12,column=1)
 
-def submitNewPatient(root, patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitlistPos):
-    add_patient(connection, patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitlistPos)
-    openHome(root)
+def submitNewPatient(root, patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitlistPos, patientUsername, patientPassword, patientConfirmPassword, entryUsername, entryPassword, entryConfirmPassword):
+    if(patientPassword == patientConfirmPassword):
+        add_patient(connection, patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitlistPos)
+        openHome(root)
+    else:
+        print("nope")
+        #Label(root, text='Passwords Do Not Match. Try Again').grid(columnspan=2, row=8)
+        #entryUsername.delete(0, END)
+        #entryPassword.delete(0, END)
+        #entryConfirmPassword.delete(0, END)
 
 
 def addNewDoctor(root):
