@@ -316,14 +316,14 @@ def addNewPatient(root):
 
     patientName = StringVar()
     patientBloodType = StringVar()
-    patientAge = StringVar()
+    patientAge = IntVar()
     patientNeeds = StringVar()
     patientRegion = StringVar()
     patientPhoneNo = StringVar()
     patientEmail = StringVar()
-    patientWaitPos = StringVar()
-
-
+    patientUsername = StringVar()
+    patientPassword = StringVar()
+    patientConfirmPassword = StringVar()
 
     Label(root, text='Add new Patient').grid(columnspan=2, row=0)
     Label(root, text='Name ').grid(row=1, column=0, sticky='e')
@@ -333,30 +333,45 @@ def addNewPatient(root):
     Label(root, text='Region ').grid(row=5, column=0, sticky='e')
     Label(root, text='Phone Number ').grid(row=6, column=0, sticky='e')
     Label(root, text='Email ').grid(row=7, column=0, sticky='e')
-    Label(root, text='Waitlist Position ').grid(row=8, column=0, sticky='e')
+    Label(root, text='Create a Username and Password').grid(columnspan=2, row=8)
+    Label(root, text='Username ').grid(row=9, column=0, sticky='e')
+    Label(root, text='Password ').grid(row=10, column=0, sticky='e')
+    Label(root, text='Confirm Password ').grid(row=11, column=0, sticky='e')
 
-    entryName = Entry(root, textvariable=patientName)
-    entryBloodType = Entry(root, textvariable=patientBloodType)
-    entryAge = Entry(root, textvariable=patientAge)
-    entryNeeds = Entry(root, textvariable=patientNeeds)
-    entryRegion = Entry(root, textvariable=patientRegion)
-    entryPhoneNo = Entry(root, textvariable=patientPhoneNo)
-    entryEmail = Entry(root, textvariable=patientEmail)
-    entryWaitPos = Entry(root, textvariable=patientWaitPos)
+    entryName = Entry(root, textvariable=patientName).grid(row=1, column=1)
+    entryBloodType = Entry(root, textvariable=patientBloodType).grid(row=2, column=1)
+    entryAge = Entry(root, textvariable=patientAge).grid(row=3, column=1)
+    entryNeeds = Entry(root, textvariable=patientNeeds).grid(row=4, column=1)
+    entryRegion = Entry(root, textvariable=patientRegion).grid(row=5, column=1)
+    entryPhoneNo = Entry(root, textvariable=patientPhoneNo).grid(row=6, column=1)
+    entryEmail = Entry(root, textvariable=patientEmail).grid(row=7, column=1)
+    entryUsername = Entry(root, textvariable=patientUsername)
+    entryPassword = Entry(root, textvariable=patientPassword, show="*")
+    entryConfirmPassword = Entry(root, textvariable=patientConfirmPassword, show="*")
 
-    entryName.grid(row=1, column=1)
-    entryBloodType.grid(row=2, column=1)
-    entryAge.grid(row=3, column=1)
-    entryNeeds.grid(row=4, column=1)
-    entryRegion.grid(row=5, column=1)
-    entryPhoneNo.grid(row=6, column=1)
-    entryEmail.grid(row=7, column=1)
-    entryWaitPos.grid(row=8, column=1)
+    entryUsername.grid(row=9, column=1)
+    entryPassword.grid(row=10, column=1)
+    entryConfirmPassword.grid(row=11, column=1)
+
+    # get the newest waitlist position and add 1 to get the new patient's position
+    patientWaitlistPos = waitlist_position(connection)[0][0] + 1
 
     # Back Button
-    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=9,column=0)
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=12,column=0)
 
-    submit = Button(root, text="Submit", command="").grid(row=9,column=1)
+    submit = Button(root, text="Submit", command=lambda:submitNewPatient(root, patientName.get(), patientBloodType.get(), patientAge.get(), patientNeeds.get(), patientRegion.get(), patientPhoneNo.get(), patientEmail.get(), patientWaitlistPos, patientUsername.get(), patientPassword.get(), patientConfirmPassword.get(), entryUsername, entryPassword, entryConfirmPassword)).grid(row=12,column=1)
+
+def submitNewPatient(root, patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitlistPos, patientUsername, patientPassword, patientConfirmPassword, entryUsername, entryPassword, entryConfirmPassword):
+    if(patientPassword == patientConfirmPassword):
+        add_patient(connection, patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitlistPos)
+        input_user(connection, patientUsername, patientPassword)
+        input_donor_privilege(connection, patientUsername)
+        openHome(root)
+    else:
+        Label(root, text='Passwords Do Not Match. Try Again').grid(columnspan=2, row=8)
+        entryUsername.delete(0, END)
+        entryPassword.delete(0, END)
+        entryConfirmPassword.delete(0, END)
 
 def addNewDoctor(root):
     global privs
@@ -365,11 +380,62 @@ def addNewDoctor(root):
     root.destroy()
     root=Tk()
 
+    doctorName = StringVar()
+    doctorSpec = StringVar()
+    doctorFee = IntVar()
+    doctorRegion = StringVar()
+    doctorEmail = StringVar()
+    doctorPhoneNo = StringVar()
+    doctorOperations = 0
+    doctorUsername = StringVar()
+    doctorPassword = StringVar()
+    doctorConfirmPassword = StringVar()
+
+    Label(root, text='Add new Doctor').grid(columnspan=2, row=0)
+    Label(root, text='Name ').grid(row=1, column=0, sticky='e')
+    Label(root, text='Specialization ').grid(row=2, column=0, sticky='e')
+    Label(root, text='Fee ').grid(row=3, column=0, sticky='e')
+    Label(root, text='Region ').grid(row=4, column=0, sticky='e')
+    Label(root, text='Email ').grid(row=5, column=0, sticky='e')
+    Label(root, text='Phone Number ').grid(row=6, column=0, sticky='e')
+    Label(root, text='Create a Username and Password').grid(columnspan=2, row=7)
+    Label(root, text='Username ').grid(row=8, column=0, sticky='e')
+    Label(root, text='Password ').grid(row=9, column=0, sticky='e')
+    Label(root, text='Confirm Password ').grid(row=10, column=0, sticky='e')
+    
+    entryName = Entry(root, textvariable=doctorName).grid(row=1, column=1)
+    entrySpec = Entry(root, textvariable=doctorSpec).grid(row=2, column=1)
+    entryFee = Entry(root, textvariable=doctorFee).grid(row=3, column=1)
+    entryRegion = Entry(root, textvariable=doctorRegion).grid(row=4, column=1)
+    entryEmail = Entry(root, textvariable=doctorEmail).grid(row=5, column=1)
+    entryPhoneNo = Entry(root, textvariable=doctorPhoneNo).grid(row=6, column=1)
+    entryUsername = Entry(root, textvariable=doctorUsername)
+    entryPassword = Entry(root, textvariable=doctorPassword, show="*")
+    entryConfirmPassword = Entry(root, textvariable=doctorConfirmPassword, show="*")
+
+    entryUsername.grid(row=8, column=1)
+    entryPassword.grid(row=9, column=1)
+    entryConfirmPassword.grid(row=10, column=1)
+
     # Back Button
-    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=11,column=0)
+
+    submit = Button(root, text="Submit", command=lambda:submitNewDoctor(root, doctorName.get(), doctorSpec.get(), doctorFee.get(), doctorRegion.get(), doctorEmail.get(), doctorPhoneNo.get(), doctorOperations, doctorUsername.get(), doctorPassword.get(), doctorConfirmPassword.get(), entryUsername, entryPassword, entryConfirmPassword)).grid(row=11,column=1)
 
 
-
+def submitNewDoctor(root, doctorName, doctorSpec, doctorFee, doctorRegion, doctorEmail, doctorPhoneNo, doctorOperations, doctorUsername, doctorPassword, doctorConfirmPassword, entryUsername, entryPassword, entryConfirmPassword):
+    if(doctorPassword == doctorConfirmPassword):
+        add_doctor(connection, doctorName, doctorSpec, doctorFee, doctorRegion, doctorEmail, doctorPhoneNo, doctorOperations)
+        input_user(connection, doctorUsername, doctorPassword)
+        input_donor_privilege(connection, doctorUsername)
+        input_patient_privilege(connection, doctorUsername)
+        input_organ_privilege(connection, doctorUsername)
+        openHome(root)
+    else:
+        Label(root, text='Passwords Do Not Match. Try Again').grid(columnspan=2, row=7)
+        entryUsername.delete(0, END)
+        entryPassword.delete(0, END)
+        entryConfirmPassword.delete(0, END)
     
 # ---------------------------------Keep At End---------------------------
 if __name__ == '__main__':

@@ -462,7 +462,7 @@ def waitlist_position(connection):
     wait_query="""
     SELECT waitlistPosition FROM Patient ORDER BY waitlistPosition DESC LIMIT 1;
     """
-    return read_query(connection)
+    return read_query(connection, wait_query)
 
 #server_connection_first()
 #connection = server_connection()
