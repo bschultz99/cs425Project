@@ -1,15 +1,21 @@
 from tkinter import* 
 from Database import*
 
+# Database Connection
 connection = server_connection_first()
 create_database(connection)
 connection = server_connection()
 create_tables(connection)
 #populate_tables(connection)
 
+# Adding example Users
+doctor_user(connection)
+patient_user(connection)
+admin_user(connection)
+
 # Create Root Window
 root = Tk()
-logged = False
+privs = 1
 
 
 def main(root):
@@ -46,6 +52,7 @@ def login(root):
 
 # Checks login status
 def checkLogin(username, password, root):
+    global privs
     user = username.get()
     passw = password.get()
 
@@ -53,11 +60,20 @@ def checkLogin(username, password, root):
     print("The password is: " + passw)
 
     # login success
-    openHome(root)
+    if (verify_user(connection, user) != []):
+        # set privileges
+        role = len(verify_privileges(connection, user))   
+        if role==6:
+            privs=3
+        elif role==4:
+            privs=2
+        
+        openHome(root)
 
     # login fail
     username.set("")
     password.set("")
+
 
 # Create Home
 def openHome(root):
@@ -85,11 +101,14 @@ def openHome(root):
 
     b7 = Button(root, text='Opperation Report', command=lambda:opperationReport(root)).grid(row=6, column=1)
     b8 = Button(root, text='Create Patient User', command=lambda:addNewPatient(root)).grid(row=6, column=2)
-    b9 = Button(root, text='Create Doctor User', command=lambda:addNewPatient(root)).grid(row=6, column=3)
+    b9 = Button(root, text='Create Doctor User', command=lambda:addNewDoctor(root)).grid(row=6, column=3)
 
 
 
 def patientInfo(root):
+    global privs
+    if privs<2:
+        return
     root.destroy()
     root=Tk()
 
@@ -111,6 +130,9 @@ def organDonorList(root):
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def addNewDonor(root):
+    global privs
+    if privs<2:
+        return
     root.destroy()
     root=Tk()
 
@@ -118,6 +140,9 @@ def addNewDonor(root):
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def addOrganToDonor(root):
+    global privs
+    if privs<2:
+        return
     root.destroy()
     root=Tk()
 
@@ -125,6 +150,9 @@ def addOrganToDonor(root):
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def donorMatchList(root):
+    global privs
+    if privs<2:
+        return
     root.destroy()
     root=Tk()
 
@@ -132,6 +160,9 @@ def donorMatchList(root):
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def incomeReport(root):
+    global privs
+    if privs<3:
+        return
     root.destroy()
     root=Tk()
 
@@ -139,6 +170,9 @@ def incomeReport(root):
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def opperationReport(root):
+    global privs
+    if privs<3:
+        return
     root.destroy()
     root=Tk()
 
@@ -146,6 +180,9 @@ def opperationReport(root):
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def addNewPatient(root):
+    global privs
+    if privs<2:
+        return
     root.destroy()
     root=Tk()
 
@@ -209,6 +246,9 @@ def submitNewPatient(root, patientName, patientBloodType, patientAge, patientNee
 
 
 def addNewDoctor(root):
+    global privs
+    if privs<3:
+        return
     root.destroy()
     root=Tk()
 
