@@ -9,16 +9,19 @@ create_tables(connection)
 
 # Create Root Window
 root = Tk()
-login = False
+logged = False
 
 
-def main():
+def main(root):
     # Create login screen
-    login()
-    
+    login(root)
+
+    # Create home screen
+    root.geometry('500x500')
         
+
 # ----------------login screen-------------------
-def login():
+def login(root):
     # Open window with dimension AxA
     root.geometry('250x100')
 
@@ -39,20 +42,24 @@ def login():
     username.grid(row=1, column=2)
     password.grid(row=2, column=2)
 
-    loginButton = Button(root, text='Login', command=lambda : checkLogin(name_var, passw_var))
+    loginButton = Button(root, text='Login', command=lambda : checkLogin(name_var, passw_var, root))
     loginButton.grid(row=3, column=2)
 
 
 
 # Checks login status
-def checkLogin(username, password):
+def checkLogin(username, password, root):
     user = username.get()
     passw = password.get()
 
     print("The name is: " + user)
     print("The password is: " + passw)
 
-    read_query(connection)
+    # login pass
+    root.destroy()
+    root = Tk()
+
+    # login fail
 
     username.set("")
     password.set("")
@@ -60,5 +67,5 @@ def checkLogin(username, password):
     
 # ---------------------------------Keep At End---------------------------
 if __name__ == '__main__':
-    main()
+    main(root)
     root.mainloop()
