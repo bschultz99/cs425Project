@@ -52,6 +52,7 @@ def login(root):
 
 # Checks login status
 def checkLogin(username, password, root):
+    global privs
     user = username.get()
     passw = password.get()
 
@@ -66,8 +67,6 @@ def checkLogin(username, password, root):
             privs=3
         elif role==4:
             privs=2
-        else:
-            privs=1
         
         openHome(root)
 
@@ -107,6 +106,10 @@ def openHome(root):
 
 
 def patientInfo(root):
+    global privs
+    print(privs)
+    if privs<2:
+        return
     root.destroy()
     root=Tk()
 
