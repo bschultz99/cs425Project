@@ -227,20 +227,7 @@ def buildTable(root, keys, query):
     # create root window
     t = Table(root, total_rows, total_columns, lst)
     
-
-
-
-
-
     
-            
-
-
-
-
-
-    
-
 
 def bloodDonorList(root):
     root.destroy()
