@@ -205,10 +205,10 @@ def addNewPatient(root):
     Label(root, text='Region ').grid(row=5, column=0, sticky='e')
     Label(root, text='Phone Number ').grid(row=6, column=0, sticky='e')
     Label(root, text='Email ').grid(row=7, column=0, sticky='e')
+    Label(root, text='Create a Username and Password').grid(columnspan=2, row=8)
     Label(root, text='Username ').grid(row=9, column=0, sticky='e')
     Label(root, text='Password ').grid(row=10, column=0, sticky='e')
     Label(root, text='Confirm Password ').grid(row=11, column=0, sticky='e')
-    Label(root, text='Create a Username and Password').grid(columnspan=2, row=8)
 
     entryName = Entry(root, textvariable=patientName).grid(row=1, column=1)
     entryBloodType = Entry(root, textvariable=patientBloodType).grid(row=2, column=1)
@@ -237,14 +237,13 @@ def submitNewPatient(root, patientName, patientBloodType, patientAge, patientNee
     if(patientPassword == patientConfirmPassword):
         add_patient(connection, patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitlistPos)
         input_user(connection, patientUsername, patientPassword)
-        print(all_patients(connection))
+        input_donor_privilege(connection, patientUsername)
         openHome(root)
     else:
         Label(root, text='Passwords Do Not Match. Try Again').grid(columnspan=2, row=8)
         entryUsername.delete(0, END)
         entryPassword.delete(0, END)
         entryConfirmPassword.delete(0, END)
-
 
 def addNewDoctor(root):
     global privs
@@ -253,10 +252,61 @@ def addNewDoctor(root):
     root.destroy()
     root=Tk()
 
+    doctorName = StringVar()
+    doctorSpec = StringVar()
+    doctorFee = IntVar()
+    doctorRegion = StringVar()
+    doctorEmail = StringVar()
+    doctorPhoneNo = StringVar()
+    doctorOperations = 0
+    doctorUsername = StringVar()
+    doctorPassword = StringVar()
+    doctorConfirmPassword = StringVar()
+
+    Label(root, text='Add new Doctor').grid(columnspan=2, row=0)
+    Label(root, text='Name ').grid(row=1, column=0, sticky='e')
+    Label(root, text='Specialization ').grid(row=2, column=0, sticky='e')
+    Label(root, text='Fee ').grid(row=3, column=0, sticky='e')
+    Label(root, text='Region ').grid(row=4, column=0, sticky='e')
+    Label(root, text='Email ').grid(row=5, column=0, sticky='e')
+    Label(root, text='Phone Number ').grid(row=6, column=0, sticky='e')
+    Label(root, text='Create a Username and Password').grid(columnspan=2, row=7)
+    Label(root, text='Username ').grid(row=8, column=0, sticky='e')
+    Label(root, text='Password ').grid(row=9, column=0, sticky='e')
+    Label(root, text='Confirm Password ').grid(row=10, column=0, sticky='e')
+    
+    entryName = Entry(root, textvariable=doctorName).grid(row=1, column=1)
+    entrySpec = Entry(root, textvariable=doctorSpec).grid(row=2, column=1)
+    entryFee = Entry(root, textvariable=doctorFee).grid(row=3, column=1)
+    entryRegion = Entry(root, textvariable=doctorRegion).grid(row=4, column=1)
+    entryEmail = Entry(root, textvariable=doctorEmail).grid(row=5, column=1)
+    entryPhoneNo = Entry(root, textvariable=doctorPhoneNo).grid(row=6, column=1)
+    entryUsername = Entry(root, textvariable=doctorUsername)
+    entryPassword = Entry(root, textvariable=doctorPassword, show="*")
+    entryConfirmPassword = Entry(root, textvariable=doctorConfirmPassword, show="*")
+
+    entryUsername.grid(row=8, column=1)
+    entryPassword.grid(row=9, column=1)
+    entryConfirmPassword.grid(row=10, column=1)
+
     # Back Button
-    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=11,column=0)
 
+    submit = Button(root, text="Submit", command=lambda:submitNewDoctor(root, doctorName.get(), doctorSpec.get(), doctorFee.get(), doctorRegion.get(), doctorEmail.get(), doctorPhoneNo.get(), doctorOperations, doctorUsername.get(), doctorPassword.get(), doctorConfirmPassword.get(), entryUsername, entryPassword, entryConfirmPassword)).grid(row=11,column=1)
 
+def submitNewDoctor(root, doctorName, doctorSpec, doctorFee, doctorRegion, doctorEmail, doctorPhoneNo, doctorOperations, doctorUsername, doctorPassword, doctorConfirmPassword, entryUsername, entryPassword, entryConfirmPassword):
+    if(doctorPassword == doctorConfirmPassword):
+        add_doctor(connection, doctorName, doctorSpec, doctorFee, doctorRegion, doctorEmail, doctorPhoneNo, doctorOperations)
+        input_user(connection, doctorUsername, doctorPassword)
+        input_donor_privilege(connection, doctorUsername)
+        input_patient_privilege(connection, doctorUsername)
+        input_organ_privilege(connection, doctorUsername)
+        openHome(root)
+    else:
+        Label(root, text='Passwords Do Not Match. Try Again').grid(columnspan=2, row=7)
+        entryUsername.delete(0, END)
+        entryPassword.delete(0, END)
+        entryConfirmPassword.delete(0, END)
     
 # ---------------------------------Keep At End---------------------------
 if __name__ == '__main__':
