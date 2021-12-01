@@ -59,7 +59,8 @@ def checkLogin(username, password, root):
     print("The password is: " + passw)
 
     # login success
-    openHome(root)
+    if (verify_user(connection, user) != []):
+        openHome(root)
 
     # login fail
     username.set("")
