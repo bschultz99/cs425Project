@@ -64,7 +64,7 @@ def openHome(root):
     root.destroy()
     root = Tk()
 
-    root.geometry('800x600')
+    # root.geometry('800x600')
     
     frameLog = Frame(root)
     frameLog.grid(row=0, column=2) 
@@ -73,20 +73,77 @@ def openHome(root):
     Label(frameLog, text='Name: ').grid(row=1, sticky='w')
     Label(frameLog, text='Role').grid(row=2, sticky='w')
 
-    b0 = Button(root, text='Patient Information', command="").grid(row=3, column=2)
+    b0 = Button(root, text='Patient Information', command=lambda:patientInfo(root)).grid(row=3, column=2)
 
-    b1 = Button(root, text='Blood Donor List', command="").grid(row=4, column=1)
-    b2 = Button(root, text='Organ Donor List', command="").grid(row=4, column=2)
-    b3 = Button(root, text='Add New Donor', command="").grid(row=4, column=3)
+    b1 = Button(root, text='Blood Donor List', command=lambda:bloodDonorList(root)).grid(row=4, column=1)
+    b2 = Button(root, text='Organ Donor List', command=lambda:organDonorList(root)).grid(row=4, column=2)
+    b3 = Button(root, text='Add New Donor', command=lambda:addNewDonor(root)).grid(row=4, column=3)
 
-    b4 = Button(root, text='Add Organ to Donor', command="").grid(row=5, column=1)
-    b5 = Button(root, text='Donor Match List', command="").grid(row=5, column=2)
-    b6 = Button(root, text='Income Report', command="").grid(row=5, column=3)
+    b4 = Button(root, text='Add Organ to Donor', command=lambda:addOrganToDonor(root)).grid(row=5, column=1)
+    b5 = Button(root, text='Donor Match List', command=lambda:donorMatchList(root)).grid(row=5, column=2)
+    b6 = Button(root, text='Income Report', command=lambda:incomeReport(root)).grid(row=5, column=3)
 
-    b7 = Button(root, text='Opperation Report', command="").grid(row=6, column=1)
+    b7 = Button(root, text='Opperation Report', command=lambda:opperationReport(root)).grid(row=6, column=1)
     b8 = Button(root, text='Create Patient User', command=lambda:addNewPatient(root)).grid(row=6, column=2)
-    b9 = Button(root, text='Create Doctor User', command="").grid(row=6, column=3)
+    b9 = Button(root, text='Create Doctor User', command=lambda:addNewPatient(root)).grid(row=6, column=3)
 
+
+
+def patientInfo(root):
+    root.destroy()
+    root=Tk()
+
+    # Back Button
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+
+def bloodDonorList(root):
+    root.destroy()
+    root=Tk()
+
+    # Back Button
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+
+def organDonorList(root):
+    root.destroy()
+    root=Tk()
+
+    # Back Button
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+
+def addNewDonor(root):
+    root.destroy()
+    root=Tk()
+
+    # Back Button
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+
+def addOrganToDonor(root):
+    root.destroy()
+    root=Tk()
+
+    # Back Button
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+
+def donorMatchList(root):
+    root.destroy()
+    root=Tk()
+
+    # Back Button
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+
+def incomeReport(root):
+    root.destroy()
+    root=Tk()
+
+    # Back Button
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+
+def opperationReport(root):
+    root.destroy()
+    root=Tk()
+
+    # Back Button
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def addNewPatient(root):
     root.destroy()
@@ -133,7 +190,15 @@ def addNewPatient(root):
 
     # Back Button
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=9,column=0)
+
     submit = Button(root, text="Submit", command="").grid(row=9,column=1)
+
+def addNewDoctor(root):
+    root.destroy()
+    root=Tk()
+
+    # Back Button
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 
     
