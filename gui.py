@@ -9,7 +9,7 @@ create_tables(connection)
 
 # Create Root Window
 root = Tk()
-login = False
+logged = False
 
 
 def main():
@@ -39,23 +39,43 @@ def login():
     username.grid(row=1, column=2)
     password.grid(row=2, column=2)
 
-    loginButton = Button(root, text='Login', command=lambda : checkLogin(name_var, passw_var))
+    loginButton = Button(root, text='Login', command=lambda : checkLogin(name_var, passw_var, root))
     loginButton.grid(row=3, column=2)
 
 
 
 # Checks login status
-def checkLogin(username, password):
+def checkLogin(username, password, root):
     user = username.get()
     passw = password.get()
 
     print("The name is: " + user)
     print("The password is: " + passw)
 
-    read_query(connection)
+    #read_query(connection)
 
     username.set("")
     password.set("")
+
+    addNewPatient(root)
+
+# Requirement 1
+# Add new users
+# Add a patient or doctor
+def addNewPatient(root):
+    root.destroy()
+    root = Tk()
+
+    root.geometry('250x500')
+
+    frameLog = Frame(root)
+    frameLog.grid(row=0, column=2) 
+
+    Label(frameLog, text='Add new Patient').grid(row=0)
+
+
+
+
 
     
 # ---------------------------------Keep At End---------------------------
