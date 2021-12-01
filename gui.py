@@ -15,10 +15,7 @@ logged = False
 def main(root):
     # Create login screen
     login(root)
-
-    # Create home screen
-    root.geometry('500x500')
-        
+    
 
 # ----------------login screen-------------------
 def login(root):
@@ -55,14 +52,42 @@ def checkLogin(username, password, root):
     print("The name is: " + user)
     print("The password is: " + passw)
 
-    # login pass
+    # login success
+    openHome(root)
+
+    # login fail
+    username.set("")
+    password.set("")
+
+
+# Create Home
+def openHome(root):
     root.destroy()
     root = Tk()
 
-    # login fail
+    root.geometry('800x600')
 
-    username.set("")
-    password.set("")
+    frameLog = Frame(root)
+    frameLog.grid(row=0, column=2) 
+
+    Label(frameLog, text='Illinois Tech Medicine: Save A Life inc.').grid(row=0, columnspan=3)
+    Label(frameLog, text='Name: ').grid(row=1, sticky='w')
+    Label(frameLog, text='Role').grid(row=2, sticky='w')
+
+    b0 = Button(root, text='Patient Information', command="").grid(row=3, column=2)
+
+    b1 = Button(root, text='Blood Donor List', command="").grid(row=4, column=1)
+    b2 = Button(root, text='Organ Donor List', command="").grid(row=4, column=2)
+    b3 = Button(root, text='Add New Donor', command="").grid(row=4, column=3)
+
+    b4 = Button(root, text='Add Organ to Donorb4', command="").grid(row=5, column=1)
+    b5 = Button(root, text='Donor Match List', command="").grid(row=5, column=2)
+    b6 = Button(root, text='Income Report', command="").grid(row=5, column=3)
+
+    b7 = Button(root, text='Opperation Report', command="").grid(row=6, column=1)
+    b8 = Button(root, text='Create Patient User', command="").grid(row=6, column=2)
+    b9 = Button(root, text='Create Doctor User', command="").grid(row=6, column=3)
+
 
     
 # ---------------------------------Keep At End---------------------------
