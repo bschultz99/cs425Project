@@ -68,14 +68,44 @@ def addNewPatient(root):
 
     root.geometry('250x500')
 
-    frameLog = Frame(root)
-    frameLog.grid(row=0, column=2) 
+    patientName = StringVar()
+    patientBloodType = StringVar()
+    patientAge = StringVar()
+    patientNeeds = StringVar()
+    patientRegion = StringVar()
+    patientPhoneNo = StringVar()
+    patientEmail = StringVar()
+    patientWaitPos = StringVar()
 
-    Label(frameLog, text='Add new Patient').grid(row=0)
 
 
+    Label(root, text='Add new Patient').grid(columnspan=2, row=0)
+    Label(root, text='Name ').grid(row=1, column=0, sticky='e')
+    Label(root, text='Blood Type ').grid(row=2, column=0, sticky='e')
+    Label(root, text='Age ').grid(row=3, column=0, sticky='e')
+    Label(root, text='Organ/Blood Needed ').grid(row=4, column=0, sticky='e')
+    Label(root, text='Region ').grid(row=5, column=0, sticky='e')
+    Label(root, text='Phone Number ').grid(row=6, column=0, sticky='e')
+    Label(root, text='Email ').grid(row=7, column=0, sticky='e')
+    Label(root, text='Waitlist Position ').grid(row=8, column=0, sticky='e')
 
+    entryName = Entry(root, textvariable=patientName)
+    entryBloodType = Entry(root, textvariable=patientBloodType)
+    entryAge = Entry(root, textvariable=patientAge)
+    entryNeeds = Entry(root, textvariable=patientNeeds)
+    entryRegion = Entry(root, textvariable=patientRegion)
+    entryPhoneNo = Entry(root, textvariable=patientPhoneNo)
+    entryEmail = Entry(root, textvariable=patientEmail)
+    entryWaitPos = Entry(root, textvariable=patientWaitPos)
 
+    entryName.grid(row=1, column=1)
+    entryBloodType.grid(row=2, column=1)
+    entryAge.grid(row=3, column=1)
+    entryNeeds.grid(row=4, column=1)
+    entryRegion.grid(row=5, column=1)
+    entryPhoneNo.grid(row=6, column=1)
+    entryEmail.grid(row=7, column=1)
+    entryWaitPos.grid(row=8, column=1)
 
     
 # ---------------------------------Keep At End---------------------------
