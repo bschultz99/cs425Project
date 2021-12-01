@@ -445,6 +445,25 @@ def input_patient_privilege (connection, username):
     """.format(username)
     execute_query(connection, priv_query)
 
+#can only verify off of username
+def verify_user(connection, username):
+    verify_query ="""
+    SELECT user FROM mysql.user WHERE user = '{}';
+    """.format(username)
+    return read_query(connection, verify_query)
+
+def verify_privileges(connection, username):
+    priv_query="""
+    SHOW GRANTS FOR '{}'@'localhost';
+    """.format(username)
+    return read_query(connection, priv_query)
+
+def waitlist_position(connection):
+    wait_query="""
+    SELECT waitlistPosition FROM Patient ORDER BY waitlistPosition DESC LIMIT 1;
+    """
+    return read_query(connection)
+
 #server_connection_first()
 #connection = server_connection()
 #create_database(connection)
@@ -453,7 +472,7 @@ def input_patient_privilege (connection, username):
 #doctor_user(connection)
 #patient_user(connection)
 #admin_user(connection)
-#results = blooddonor_matchlist(connection)
-#for result in results:
-#    print (result)
+#results = verify_privileges
+#(connection, 'doctor')
+#print (results)
 #drop_tables(connection)
