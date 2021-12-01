@@ -156,9 +156,9 @@ def addNewPatient(root):
     patientRegion = StringVar()
     patientPhoneNo = StringVar()
     patientEmail = StringVar()
-    patientWaitPos = StringVar()
-
-
+    patientUsername = StringVar()
+    patientPassword = StringVar()
+    patientConfirmPassword = StringVar()
 
     Label(root, text='Add new Patient').grid(columnspan=2, row=0)
     Label(root, text='Name ').grid(row=1, column=0, sticky='e')
@@ -168,7 +168,9 @@ def addNewPatient(root):
     Label(root, text='Region ').grid(row=5, column=0, sticky='e')
     Label(root, text='Phone Number ').grid(row=6, column=0, sticky='e')
     Label(root, text='Email ').grid(row=7, column=0, sticky='e')
-    Label(root, text='Waitlist Position ').grid(row=8, column=0, sticky='e')
+    Label(root, text='Username ').grid(row=9, column=0, sticky='e')
+    Label(root, text='Password ').grid(row=10, column=0, sticky='e')
+    Label(root, text='Confirm Password ').grid(row=11, column=0, sticky='e')
 
     entryName = Entry(root, textvariable=patientName)
     entryBloodType = Entry(root, textvariable=patientBloodType)
@@ -177,7 +179,9 @@ def addNewPatient(root):
     entryRegion = Entry(root, textvariable=patientRegion)
     entryPhoneNo = Entry(root, textvariable=patientPhoneNo)
     entryEmail = Entry(root, textvariable=patientEmail)
-    entryWaitPos = Entry(root, textvariable=patientWaitPos)
+    entryUsername = Entry(root, textvariable=patientUsername)
+    entryPassword = Entry(root, textvariable=patientPassword, show="*")
+    entryConfirmPassword = Entry(root, textvariable=patientConfirmPassword, show="*")
 
     entryName.grid(row=1, column=1)
     entryBloodType.grid(row=2, column=1)
@@ -186,12 +190,23 @@ def addNewPatient(root):
     entryRegion.grid(row=5, column=1)
     entryPhoneNo.grid(row=6, column=1)
     entryEmail.grid(row=7, column=1)
-    entryWaitPos.grid(row=8, column=1)
+    entryUsername.grid(row=9, column=1)
+    entryPassword.grid(row=10, column=1)
+    entryConfirmPassword.grid(row=11, column=1)
+
+
+    # get the newest waitlist position and add 1 to get the new patient's position
+    patientWaitlistPos = waitlist_position(connection)[0][0] + 1
 
     # Back Button
-    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=9,column=0)
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=8,column=0)
 
-    submit = Button(root, text="Submit", command="").grid(row=9,column=1)
+    submit = Button(root, text="Submit", command=lambda:submitNewPatient(root, patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitlistPos)).grid(row=8,column=1)
+
+def submitNewPatient(root, patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitlistPos):
+    add_patient(connection, patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitlistPos)
+    openHome(root)
+
 
 def addNewDoctor(root):
     root.destroy()
