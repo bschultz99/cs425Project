@@ -79,15 +79,19 @@ def openHome(root):
     b2 = Button(root, text='Organ Donor List', command="").grid(row=4, column=2)
     b3 = Button(root, text='Add New Donor', command="").grid(row=4, column=3)
 
-    b4 = Button(root, text='Add Organ to Donorb4', command="").grid(row=5, column=1)
+    b4 = Button(root, text='Add Organ to Donor', command="").grid(row=5, column=1)
     b5 = Button(root, text='Donor Match List', command="").grid(row=5, column=2)
     b6 = Button(root, text='Income Report', command="").grid(row=5, column=3)
 
     b7 = Button(root, text='Opperation Report', command="").grid(row=6, column=1)
-    b8 = Button(root, text='Create Patient User', command="").grid(row=6, column=2)
+    b8 = Button(root, text='Create Patient User', command=lambda:addNewPatient(root)).grid(row=6, column=2)
     b9 = Button(root, text='Create Doctor User', command="").grid(row=6, column=3)
 
+
 def addNewPatient(root):
+    root.destroy()
+    root=Tk()
+
     patientName = StringVar()
     patientBloodType = StringVar()
     patientAge = StringVar()
@@ -126,6 +130,10 @@ def addNewPatient(root):
     entryPhoneNo.grid(row=6, column=1)
     entryEmail.grid(row=7, column=1)
     entryWaitPos.grid(row=8, column=1)
+
+    # Back Button
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=9,column=0)
+    submit = Button(root, text="Submit", command="").grid(row=9,column=1)
 
 
     
