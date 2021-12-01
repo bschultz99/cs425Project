@@ -1,11 +1,17 @@
 from tkinter import* 
 from Database import*
 
+# Database Connection
 connection = server_connection_first()
 create_database(connection)
 connection = server_connection()
 create_tables(connection)
 #populate_tables(connection)
+
+# Adding example Users
+doctor_user(connection)
+patient_user(connection)
+admin_user(connection)
 
 # Create Root Window
 root = Tk()
