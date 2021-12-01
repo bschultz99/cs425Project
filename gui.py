@@ -36,5 +36,6 @@ def create_window():
     window = Toplevel(root)
 
 # ---------------------------------Keep At End---------------------------
-main()
-root.mainloop()
+if __name__ == '__main__':
+    main()
+    root.mainloop()
