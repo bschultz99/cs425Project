@@ -101,13 +101,12 @@ def openHome(root):
 
     b7 = Button(root, text='Opperation Report', command=lambda:opperationReport(root)).grid(row=6, column=1)
     b8 = Button(root, text='Create Patient User', command=lambda:addNewPatient(root)).grid(row=6, column=2)
-    b9 = Button(root, text='Create Doctor User', command=lambda:addNewPatient(root)).grid(row=6, column=3)
+    b9 = Button(root, text='Create Doctor User', command=lambda:addNewDoctor(root)).grid(row=6, column=3)
 
 
 
 def patientInfo(root):
     global privs
-    print(privs)
     if privs<2:
         return
     root.destroy()
@@ -131,6 +130,9 @@ def organDonorList(root):
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def addNewDonor(root):
+    global privs
+    if privs<2:
+        return
     root.destroy()
     root=Tk()
 
@@ -138,6 +140,9 @@ def addNewDonor(root):
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def addOrganToDonor(root):
+    global privs
+    if privs<2:
+        return
     root.destroy()
     root=Tk()
 
@@ -145,6 +150,9 @@ def addOrganToDonor(root):
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def donorMatchList(root):
+    global privs
+    if privs<2:
+        return
     root.destroy()
     root=Tk()
 
@@ -152,6 +160,9 @@ def donorMatchList(root):
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def incomeReport(root):
+    global privs
+    if privs<3:
+        return
     root.destroy()
     root=Tk()
 
@@ -159,6 +170,9 @@ def incomeReport(root):
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def opperationReport(root):
+    global privs
+    if privs<3:
+        return
     root.destroy()
     root=Tk()
 
@@ -166,6 +180,9 @@ def opperationReport(root):
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def addNewPatient(root):
+    global privs
+    if privs<2:
+        return
     root.destroy()
     root=Tk()
 
@@ -214,6 +231,9 @@ def addNewPatient(root):
     submit = Button(root, text="Submit", command="").grid(row=9,column=1)
 
 def addNewDoctor(root):
+    global privs
+    if privs<3:
+        return
     root.destroy()
     root=Tk()
 
