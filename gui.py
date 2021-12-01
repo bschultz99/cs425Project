@@ -217,9 +217,13 @@ def addNewPatient(root):
     entryRegion = Entry(root, textvariable=patientRegion).grid(row=5, column=1)
     entryPhoneNo = Entry(root, textvariable=patientPhoneNo).grid(row=6, column=1)
     entryEmail = Entry(root, textvariable=patientEmail).grid(row=7, column=1)
-    entryUsername = Entry(root, textvariable=patientUsername).grid(row=9, column=1)
-    entryPassword = Entry(root, textvariable=patientPassword, show="*").grid(row=10, column=1)
-    entryConfirmPassword = Entry(root, textvariable=patientConfirmPassword, show="*").grid(row=11, column=1)
+    entryUsername = Entry(root, textvariable=patientUsername)
+    entryPassword = Entry(root, textvariable=patientPassword, show="*")
+    entryConfirmPassword = Entry(root, textvariable=patientConfirmPassword, show="*")
+
+    entryUsername.grid(row=9, column=1)
+    entryPassword.grid(row=10, column=1)
+    entryConfirmPassword.grid(row=11, column=1)
 
     # get the newest waitlist position and add 1 to get the new patient's position
     patientWaitlistPos = waitlist_position(connection)[0][0] + 1
@@ -232,13 +236,14 @@ def addNewPatient(root):
 def submitNewPatient(root, patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitlistPos, patientUsername, patientPassword, patientConfirmPassword, entryUsername, entryPassword, entryConfirmPassword):
     if(patientPassword == patientConfirmPassword):
         add_patient(connection, patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitlistPos)
+        input_user(connection, patientUsername, patientPassword)
+        print(all_patients(connection))
         openHome(root)
     else:
-        print("nope")
-        #Label(root, text='Passwords Do Not Match. Try Again').grid(columnspan=2, row=8)
-        #entryUsername.delete(0, END)
-        #entryPassword.delete(0, END)
-        #entryConfirmPassword.delete(0, END)
+        Label(root, text='Passwords Do Not Match. Try Again').grid(columnspan=2, row=8)
+        entryUsername.delete(0, END)
+        entryPassword.delete(0, END)
+        entryConfirmPassword.delete(0, END)
 
 
 def addNewDoctor(root):
