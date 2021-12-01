@@ -112,12 +112,140 @@ def patientInfo(root):
     root.destroy()
     root=Tk()
 
+    
+
+    patientName = StringVar()
+    patientBloodType = StringVar()
+    patientAge = StringVar()
+    patientNeeds = StringVar()
+    patientRegion = StringVar()
+    patientPhoneNo = StringVar()
+    patientEmail = StringVar()
+    patientWaitPos = StringVar()
+
+
+
+    Label(root, text='Patient Info Lookup').grid(columnspan=2, row=0)
+    Label(root, text='Name ').grid(row=1, column=0, sticky='e')
+    Label(root, text='Blood Type ').grid(row=2, column=0, sticky='e')
+    Label(root, text='Age ').grid(row=3, column=0, sticky='e')
+    Label(root, text='Organ/Blood Needed ').grid(row=4, column=0, sticky='e')
+    Label(root, text='Region ').grid(row=5, column=0, sticky='e')
+    Label(root, text='Phone Number ').grid(row=6, column=0, sticky='e')
+    Label(root, text='Email ').grid(row=7, column=0, sticky='e')
+    Label(root, text='Waitlist Position ').grid(row=8, column=0, sticky='e')
+
+    entryName = Entry(root, textvariable=patientName)
+    entryBloodType = Entry(root, textvariable=patientBloodType)
+    entryAge = Entry(root, textvariable=patientAge)
+    entryNeeds = Entry(root, textvariable=patientNeeds)
+    entryRegion = Entry(root, textvariable=patientRegion)
+    entryPhoneNo = Entry(root, textvariable=patientPhoneNo)
+    entryEmail = Entry(root, textvariable=patientEmail)
+    entryWaitPos = Entry(root, textvariable=patientWaitPos)
+
+    entryName.grid(row=1, column=1)
+    entryBloodType.grid(row=2, column=1)
+    entryAge.grid(row=3, column=1)
+    entryNeeds.grid(row=4, column=1)
+    entryRegion.grid(row=5, column=1)
+    entryPhoneNo.grid(row=6, column=1)
+    entryEmail.grid(row=7, column=1)
+    entryWaitPos.grid(row=8, column=1)
+
+    ret = [patientName, patientBloodType, patientAge, patientNeeds, patientRegion, patientPhoneNo, patientEmail, patientWaitPos]
+
     # Back Button
-    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=9,column=0)
+    submit = Button(root, text="Submit", command=lambda:patientFilter(root, ret)).grid(row=9,column=1)
+
+class Table:
+      
+    def __init__(self,root, total_rows, total_columns, lst):
+        color = 'blue'
+        # code for creating table
+        for i in range(total_rows):
+            for j in range(total_columns):
+                  
+                self.e = Entry(root, width=15, fg=color,
+                               font=('Arial',12,'bold'))
+                  
+                self.e.grid(row=i, column=j)
+                self.e.insert(END, lst[i][j])
+            color="black"
+                
+        back = Button(root, text="Back", command=lambda:patientInfo(root)).grid(row=total_rows+1,columnspan=total_columns)
+
+
+def patientFilter(root, lst):
+    root.destroy()
+    root = Tk()
+
+    query = """SELECT * FROM Patient"""
+    filter = []
+    empty = 0
+
+    for x in lst:
+        if len(x.get())==0:
+            filter.append("*")
+            empty+=1
+        else:
+            filter.append(x.get())
+    keys = ['patient_name', 'bloodType', 'age', 'needs', 'region', 'phoneNumber', 'email', 'waitlistPosition']
+    map = dict(zip(keys, filter))
+    print(map)
+
+    # query creation
+    if empty==len(keys):
+        query+=""";"""
+        buildTable(root, keys, read_query(connection, query))
+    else:
+        query+=""" WHERE """
+        for x in map.items():
+            if (x[1]=="*" or x[1]==0):
+                continue
+            else:
+                query=query+x[0]+"""='"""+x[1]+"""' AND """
+        
+        if query[-4:]=="""AND """:
+            query=query[:-5]
+        query+=";"
+    
+        buildTable(root, keys, read_query(connection, query))
+
+
+def buildTable(root, keys, query):
+    keys.insert(0,"patient_ID")
+    query.insert(0,keys)
+    lst = query
+    
+    # find total number of rows and
+    # columns in list
+    total_rows = len(lst)
+    total_columns = len(lst[0])
+    
+    # create root window
+    t = Table(root, total_rows, total_columns, lst)
+    
+
+
+
+
+
+    
+            
+
+
+
+
+
+    
+
 
 def bloodDonorList(root):
     root.destroy()
     root=Tk()
+    
 
     # Back Button
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
@@ -239,6 +367,7 @@ def addNewDoctor(root):
 
     # Back Button
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+
 
 
     
