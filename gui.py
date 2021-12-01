@@ -15,7 +15,7 @@ admin_user(connection)
 
 # Create Root Window
 root = Tk()
-logged = False
+privs = 1
 
 
 def main(root):
@@ -60,11 +60,21 @@ def checkLogin(username, password, root):
 
     # login success
     if (verify_user(connection, user) != []):
+        # set privileges
+        role = len(verify_privileges(connection, user))   
+        if role==6:
+            privs=3
+        elif role==4:
+            privs=2
+        else:
+            privs=1
+        
         openHome(root)
 
     # login fail
     username.set("")
     password.set("")
+
 
 # Create Home
 def openHome(root):
