@@ -85,23 +85,21 @@ def openHome(root):
     frameLog = Frame(root)
     frameLog.grid(row=0, column=2) 
 
-    Label(frameLog, text='Illinois Tech Medicine: Save A Life inc.').grid(row=0, columnspan=3)
-    Label(frameLog, text='Name: ').grid(row=1, sticky='w')
-    Label(frameLog, text='Role').grid(row=2, sticky='w')
+    Label(frameLog, text='Illinois Tech Medicine: Save A Life inc.', bg="red", font=('Arial',12,'bold')).grid(row=0, columnspan=3)
 
-    b0 = Button(root, text='Patient Information', command=lambda:patientInfo(root)).grid(row=3, column=2)
+    b0 = Button(root, text='Patient Information', width="105", command=lambda:patientInfo(root)).grid(row=3, column=1, columnspan=3)
 
-    b1 = Button(root, text='Blood Donor List', command=lambda:bloodDonorList(root)).grid(row=4, column=1)
-    b2 = Button(root, text='Organ Donor List', command=lambda:organDonorList(root)).grid(row=4, column=2)
-    b3 = Button(root, text='Add New Donor', command=lambda:addNewDonor(root)).grid(row=4, column=3)
+    b1 = Button(root, text='Blood Donor List', width='30', command=lambda:bloodDonorList(root)).grid(row=4, column=1)
+    b2 = Button(root, text='Organ Donor List', width='30', command=lambda:organDonorList(root)).grid(row=4, column=2)
+    b3 = Button(root, text='Add New Donor', width='30', command=lambda:addNewDonor(root)).grid(row=4, column=3)
 
-    b4 = Button(root, text='Add Organ to Donor', command=lambda:addOrganToDonor(root)).grid(row=5, column=1)
-    b5 = Button(root, text='Donor Match List', command=lambda:donorMatchList(root)).grid(row=5, column=2)
-    b6 = Button(root, text='Income Report', command=lambda:incomeReport(root)).grid(row=5, column=3)
+    b4 = Button(root, text='Add Organ to Donor', width="30", command=lambda:addOrganToDonor(root)).grid(row=5, column=1)
+    b5 = Button(root, text='Donor Match List', width='30', command=lambda:donorMatchList(root)).grid(row=5, column=2)
+    b6 = Button(root, text='Income Report', width='30', command=lambda:incomeReport(root)).grid(row=5, column=3)
 
-    b7 = Button(root, text='Opperation Report', command=lambda:opperationReport(root)).grid(row=6, column=1)
-    b8 = Button(root, text='Create Patient User', command=lambda:addNewPatient(root)).grid(row=6, column=2)
-    b9 = Button(root, text='Create Doctor User', command=lambda:addNewDoctor(root)).grid(row=6, column=3)
+    b7 = Button(root, text='Opperation Report', width='30', command=lambda:opperationReport(root)).grid(row=6, column=1)
+    b8 = Button(root, text='Create Patient User', width='30', command=lambda:addNewPatient(root)).grid(row=6, column=2)
+    b9 = Button(root, text='Create Doctor User', width='30', command=lambda:addNewDoctor(root)).grid(row=6, column=3)
 
 
 
