@@ -97,7 +97,7 @@ def openHome(root):
     b5 = Button(root, text='Donor Match List', width='30', command=lambda:donorMatchList(root)).grid(row=5, column=2)
     b6 = Button(root, text='Income Report', width='30', command=lambda:incomeReport(root)).grid(row=5, column=3)
 
-    b7 = Button(root, text='Opperation Report', width='30', command=lambda:opperationReport(root)).grid(row=6, column=1)
+    b7 = Button(root, text='Opperation Report', width='30', command=lambda:operationReport(root)).grid(row=6, column=1)
     b8 = Button(root, text='Create Patient User', width='30', command=lambda:addNewPatient(root)).grid(row=6, column=2)
     b9 = Button(root, text='Create Doctor User', width='30', command=lambda:addNewDoctor(root)).grid(row=6, column=3)
 
@@ -464,8 +464,52 @@ def donorMatchList(root):
     root.destroy()
     root=Tk()
 
+    Label(root, text='Donor Matching List').grid(row=0, columnspan=2)
+
+    v = StringVar(root, "1")
+
+    values = {"Organ Match" : "1",
+        "Blood Match" : "2"}
+
+    count=1
+    for (text, value) in values.items():
+        Radiobutton(root, text = text, variable = v,
+            value = value).grid(row=count, columnspan=2)
+        count+=1
+
+    submit = Button(root, text="Submit", command=lambda:matchList(root, v.get())).grid(row=3,column=1)
+
+
     # Back Button
-    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=3,column=0)
+
+def matchList(root, v):
+    root.destroy()
+    root=Tk()
+    
+    print(v)
+    if v=='1':
+        lst = organdonor_matchlist(connection)
+        lst.insert(0, ("Donor_ID", "Blood Type", "Organ", "Region", "Patient ID", "Patient Name"))
+
+        # find total number of rows and
+        # columns in list
+        total_rows = len(lst)
+        total_columns = len(lst[0])
+        
+        # create root window
+        r = Table(root, total_rows, total_columns, lst, 'red')
+    else:
+        lst = blooddonor_matchlist(connection)
+        lst.insert(0, ("Donor_ID", "Blood Type", "Region", "Patient ID", "Patient Name"))
+
+        # find total number of rows and
+        # columns in list
+        total_rows = len(lst)
+        total_columns = len(lst[0])
+        
+        # create root window
+        t = Table(root, total_rows, total_columns, lst, 'purple')
 
 def incomeReport(root):
     global privs
@@ -474,18 +518,34 @@ def incomeReport(root):
     root.destroy()
     root=Tk()
 
-    # Back Button
-    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+    lst = all_hospitals(connection)
+    lst.insert(0, ("ID", "Hospital", "Region", "Income"))
 
-def opperationReport(root):
+    # find total number of rows and
+    # columns in list
+    total_rows = len(lst)
+    total_columns = len(lst[0])
+    
+    # create root window
+    t = Table(root, total_rows, total_columns, lst, 'purple')
+
+def operationReport(root):
     global privs
     if privs<3:
         return
     root.destroy()
     root=Tk()
+    
+    lst = operations_report(connection)
+    lst.insert(0, ("Doctor", "Location", "Total"))
 
-    # Back Button
-    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+    # find total number of rows and
+    # columns in list
+    total_rows = len(lst)
+    total_columns = len(lst[0])
+    
+    # create root window
+    t = Table(root, total_rows, total_columns, lst, 'orange')
 
 def addNewPatient(root):
     global privs
