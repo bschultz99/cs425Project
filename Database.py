@@ -64,9 +64,9 @@ def create_tables(connection):
     age INT,
     chronicDisease VARCHAR(255),
     drugUsage VARCHAR(255),
-    lastTattooDate DATE,
+    lastTattooDate VARCHAR(255),
     medicationHistory VARCHAR(255),
-    lastDonaitonTime DATE,
+    lastDonaitonTime VARCHAR(255),
     phoneNumber VARCHAR(10),
     email VARCHAR(255),
     region VARCHAR(255),
@@ -104,7 +104,7 @@ def create_tables(connection):
 	organ_ID INT AUTO_INCREMENT PRIMARY KEY,
     organ_name VARCHAR(255),
     shelfLife INT,
-    availablityDate DATE
+    availablityDate VARCHAR(255)
     );
     """
     hospital_table = """
@@ -464,10 +464,10 @@ def waitlist_position(connection):
     """
     return read_query(connection, wait_query)
 
-#server_connection_first()
-#connection = server_connection()
-#create_database(connection)
-#create_tables(connection)
+server_connection_first()
+connection = server_connection()
+create_database(connection)
+create_tables(connection)
 #populate_tables(connection)
 #doctor_user(connection)
 #patient_user(connection)
