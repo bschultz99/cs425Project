@@ -85,15 +85,15 @@ def openHome(root):
     frameLog = Frame(root)
     frameLog.grid(row=0, column=2) 
 
-    Label(frameLog, text='Illinois Tech Medicine: Save A Life inc.', bg="red", font=('Arial',12,'bold')).grid(row=0, columnspan=3)
+    Label(frameLog, text='Illinois Tech Medicine: Save A Life inc.', bg="red", height="2", font=('Arial',12,'bold')).grid(row=0, columnspan=3)
 
-    b0 = Button(root, text='Patient Information', width="105", command=lambda:patientInfo(root)).grid(row=3, column=1, columnspan=3)
+    b0 = Button(root, text='Patient Information', width="30", command=lambda:patientInfo(root)).grid(row=5, column=1)
 
     b1 = Button(root, text='Blood Donor List', width='30', command=lambda:bloodDonorList(root)).grid(row=4, column=1)
     b2 = Button(root, text='Organ Donor List', width='30', command=lambda:organDonorList(root)).grid(row=4, column=2)
     b3 = Button(root, text='Add New Donor', width='30', command=lambda:addNewDonor(root)).grid(row=4, column=3)
 
-    b4 = Button(root, text='Add Organ to Donor', width="30", command=lambda:addOrganToDonor(root)).grid(row=5, column=1)
+    b4 = Button(root, text='----------------------------------------------------------------------------------------------------------------------------------------------', width="105").grid(row=3, column=1, columnspan=3)
     b5 = Button(root, text='Donor Match List', width='30', command=lambda:donorMatchList(root)).grid(row=5, column=2)
     b6 = Button(root, text='Income Report', width='30', command=lambda:incomeReport(root)).grid(row=5, column=3)
 
