@@ -60,7 +60,7 @@ def checkLogin(username, password, root):
     print("The password is: " + passw)
 
     # login success
-    if (verify_user(connection, user) != []):
+    if (verify_user(connection, user) != [] and passw!=""):
         # set privileges
         role = len(verify_privileges(connection, user))   
         if role==6:
