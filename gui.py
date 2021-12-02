@@ -299,8 +299,64 @@ def organDonorList(root):
     root.destroy()
     root=Tk()
 
+    bloodType = StringVar()
+    organs = StringVar()
+    age = StringVar()
+    chronicDisease = StringVar()
+    drugUsage = StringVar()
+    lastTattooDate = StringVar()
+    medicationHistory = StringVar()
+    lastDonationTime = StringVar()
+    phoneNumber = StringVar()
+    email = StringVar()
+    region = StringVar()
+    
+
+
+    Label(root, text="Organ Donor List").grid(columnspan=2, row=0)
+    Label(root, text='Blood Type ').grid(row=1, column=0, sticky='e')
+    Label(root, text='Organs ').grid(row=2, column=0, sticky='e')
+    Label(root, text='Age ').grid(row=3, column=0, sticky='e')
+    Label(root, text='Chronic Disease ').grid(row=4, column=0, sticky='e')
+    Label(root, text='Drug Usage ').grid(row=5, column=0, sticky='e')
+    Label(root, text='last Tattoo Date ').grid(row=6, column=0, sticky='e')
+    Label(root, text='Medication History ').grid(row=7, column=0, sticky='e')
+    Label(root, text='Last Donation Date ').grid(row=8, column=0, sticky='e')
+    Label(root, text='Phone Number ').grid(row=9, column=0, sticky='e')
+    Label(root, text='Email ').grid(row=10, column=0, sticky='e')
+    Label(root, text='Region ').grid(row=11, column=0, sticky='e')
+
+
+    entryName = Entry(root, textvariable=bloodType)
+    entryBloodType = Entry(root, textvariable=organs)
+    entryAge = Entry(root, textvariable=age)
+    entryNeeds = Entry(root, textvariable=chronicDisease)
+    entryRegion = Entry(root, textvariable=drugUsage)
+    entryPhoneNo = Entry(root, textvariable=lastTattooDate)
+    entryEmail = Entry(root, textvariable=medicationHistory)
+    entryWaitPos = Entry(root, textvariable=lastDonationTime)
+    entry1 = Entry(root, textvariable=phoneNumber)
+    entry2 = Entry(root, textvariable=email)
+    entry3 = Entry(root, textvariable=region)
+
+    entryName.grid(row=1, column=1)
+    entryBloodType.grid(row=2, column=1)
+    entryAge.grid(row=3, column=1)
+    entryNeeds.grid(row=4, column=1)
+    entryRegion.grid(row=5, column=1)
+    entryPhoneNo.grid(row=6, column=1)
+    entryEmail.grid(row=7, column=1)
+    entryWaitPos.grid(row=8, column=1)
+    entry1.grid(row=9, column=1)
+    entry2.grid(row=10, column=1)
+    entry3.grid(row=11, column=1)
+
+
+    ret = [bloodType, organs, age, chronicDisease, drugUsage, lastTattooDate, medicationHistory, lastDonationTime, phoneNumber, email, region]
+
     # Back Button
-    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=12,column=0)
+    submit = Button(root, text="Submit", command=lambda:donorFilter2(root, ret)).grid(row=12,column=1)
 
 
 def donorFilter(root, lst):
@@ -343,6 +399,45 @@ def donorFilter(root, lst):
         buildTable(root, keys, read_query(connection, query), "red")
 
 
+def donorFilter2(root, lst):
+    root.destroy()
+    root = Tk()
+
+    query = """SELECT * FROM Donor WHERE (donorType = 'Blood' OR donorType = 'Both')"""
+    filter = []
+    empty = 0
+
+    for x in lst:
+        if len(x.get())==0:
+            filter.append("*")
+            empty+=1
+        else:
+            filter.append(x.get())
+
+    keys = ['bloodType', 'organs', 'age', 'chronicDisease', 'drugUsage', 'lastTattooDate', 'medicationHistory', 'lastDonationTime', 'phoneNumber', 'email', 'region', 'donorType']
+    map = dict(zip(keys, filter))
+
+    # query creation
+    if empty==len(keys):
+        query+=""";"""
+        keys.insert(0,"donor_ID")
+        buildTable(root, keys, read_query(connection, query), "green")
+    else:
+        for x in map.items():
+            if (x[1]=="*" or x[1]==0):
+                continue
+            else:
+                if not x[1]:
+                    x[1]= "None"
+                query=query+""" AND """+x[0]+"""='"""+x[1]+"""' AND """
+        
+        if query[-4:]=="""AND """:
+            query=query[:-5]
+        query+=";"
+        keys.insert(0,"donor_ID")
+        print(query)
+        buildTable(root, keys, read_query(connection, query), "green")
+
 
 def addNewDonor(root):
     global privs
@@ -352,7 +447,7 @@ def addNewDonor(root):
     root=Tk()
 
     # Back Button
-    back = Button(root, text="Back", command=lambda:bloodDonorList(root)).grid(row=0,column=0)
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def addOrganToDonor(root):
     global privs
