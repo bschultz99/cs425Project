@@ -1,4 +1,6 @@
-from tkinter import* 
+from tkinter import*
+from typing import List
+from tkcalendar import*
 from Database import*
 
 # Database Connection
@@ -123,16 +125,6 @@ def bloodDonorList(root):
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
 
 def organDonorList(root):
-    root.destroy()
-    root=Tk()
-
-    # Back Button
-    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=0,column=0)
-
-def addNewDonor(root):
-    global privs
-    if privs<2:
-        return
     root.destroy()
     root=Tk()
 
@@ -307,7 +299,142 @@ def submitNewDoctor(root, doctorName, doctorSpec, doctorFee, doctorRegion, docto
         entryUsername.delete(0, END)
         entryPassword.delete(0, END)
         entryConfirmPassword.delete(0, END)
+
+def addNewDonor(root, initialFlag = FALSE):
+    global privs
+    if privs<2:
+        return
+    root.destroy()
+    root=Tk()
+
+    donorBloodType = StringVar()
+    donorRadioSelection = StringVar()
+    donorOrgans = StringVar()
+    donorAge = IntVar()
+    donorDisease = StringVar()
+    donorDrugs = StringVar()
+    donorLastTattoo = StringVar()
+    donorMedication = StringVar()
+    donorLastDonated = StringVar()
+    donorPhoneNo = StringVar()
+    donorEmail = StringVar()
+    donorRegion = StringVar()
+    donorFlag1 = BooleanVar()
+    donorFlag2 = BooleanVar()
+
+    labelOrgans = Label(root, text='Organ ')
+    entryOrgans = Entry(root, textvariable=donorOrgans)
     
+    def hideDates():
+        if donorFlag1.get():
+            entryLastTattoo.grid_remove()
+        else:
+            entryLastTattoo.grid(row=9, column=1)
+
+        if donorFlag2.get():
+            entryLastDonated.grid_remove()
+        else:
+            entryLastDonated.grid(row=12, column=1)
+
+    entryLastTattoo = DateEntry(root, selectmode='day', textvariable=donorLastTattoo, date_pattern="yyyy-MM-dd")
+    entryLastDonated = DateEntry(root, selectmode='day', textvariable=donorLastDonated, date_pattern="yyyy-MM-dd")
+    entryTattooBox = Checkbutton(root, text="No Tattoos", variable=donorFlag1, command=hideDates)
+    entryDonatedBox = Checkbutton(root, text="No Prior Donation", variable=donorFlag2, command=hideDates)
+
+    if(initialFlag == FALSE):
+        entryLastTattoo.grid(row=9, column=1)
+        entryLastDonated.grid(row=12, column=1)
+        entryTattooBox.grid(row=10, column=1)
+        entryDonatedBox.grid(row=13, column=1)
+        tattooDate = TRUE
+        donatedDate = TRUE
+        initialFlag = TRUE
+        donorDonationType = "Blood"
+
+    def expandForm():
+        if(donorRadioSelection.get() == "organs"):
+            labelOrgans.grid(row=4, column=0, sticky='e')
+            entryOrgans.grid(row=4, column=1)
+            donorDonationType = "Organ"
+        elif(donorRadioSelection.get() == "both"):
+            labelOrgans.grid(row=4, column=0, sticky='e')
+            entryOrgans.grid(row=4, column=1)
+            donorDonationType = "Both"
+        else:
+            labelOrgans.grid_remove()
+            entryOrgans.grid_remove()
+            donorDonationType = "Blood"
+        
+    Label(root, text='Add new Donor').grid(columnspan=2, row=0)
+    Label(root, text='Donor Type ').grid(row=1, column=0, sticky='e')
+    Label(root, text='Blood Type ').grid(row=5, column=0, sticky='e')
+    Label(root, text='Age ').grid(row=6, column=0, sticky='e')
+    Label(root, text='Disease(s) ').grid(row=7, column=0, sticky='e')
+    Label(root, text='Drug(s) Used ').grid(row=8, column=0, sticky='e')
+    Label(root, text='Date of Last Tattoo ').grid(row=9, column=0, sticky='e')
+    Label(root, text='Medication(s) Used ').grid(row=11, column=0, sticky='e')
+    Label(root, text='Date of Last Donation ').grid(row=12, column=0, sticky='e')
+    Label(root, text='Phone Number ').grid(row=14, column=0, sticky='e')
+    Label(root, text='Email ').grid(row=15, column=0, sticky='e')
+    Label(root, text='Region ').grid(row=16, column=0, sticky='e')
+
+    entryBloodType = Entry(root, textvariable=donorBloodType).grid(row=5, column=1)
+    entryAge = Entry(root, textvariable=donorAge).grid(row=6, column=1)
+    entryDisease = Entry(root, textvariable=donorDisease).grid(row=7, column=1)
+    entryDrugs = Entry(root, textvariable=donorDrugs).grid(row=8, column=1)
+    entryMedication = Entry(root, textvariable=donorMedication).grid(row=11, column=1)
+    entryPhoneNo = Entry(root, textvariable=donorPhoneNo).grid(row=14, column=1)
+    entryEmail = Entry(root, textvariable=donorEmail).grid(row=15, column=1)
+    entryRegion = Entry(root, textvariable=donorRegion).grid(row=16, column=1)
+
+    entryRadioBlood = Radiobutton(root, text="Blood", variable=donorRadioSelection, value="blood", command=expandForm).grid(row=1, column=1, sticky='w')
+    entryRadioOrgan = Radiobutton(root, text="Organs", variable=donorRadioSelection, value="organs", command=expandForm).grid(row=2, column=1, sticky='w')
+    entryRadioOrgan = Radiobutton(root, text="Both", variable=donorRadioSelection, value="both", command=expandForm).grid(row=3, column=1, sticky='w')
+
+    # Back Button
+    back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=17, column=0)
+
+    submit = Button(root, text="Submit", command=lambda:exportList(root, donorBloodType.get(), donorOrgans.get(), donorAge.get(), donorDisease.get(), donorDrugs.get(), donorLastTattoo.get(), donorFlag1.get(), donorMedication.get(), donorLastDonated.get(), donorFlag2.get(), donorPhoneNo.get(), donorEmail.get(), donorRegion.get(), donorDonationType)).grid(row=17, column=1)
+
+def submitNewDonor(root, list):
+    add_donor(connection, list[0], list[1], list[2], list[3], list[4], list[5],
+              list[6], list[7], list[8], list[9], list[10], list[11])
+    print(all_donors(connection))
+    openHome(root)
+
+def exportList(root, donorBloodType, donorOrgans, donorAge, donorDisease, donorDrugs, donorLastTattoo, tattooDate,
+               donorMedication, donorLastDonated, donatedDate, donorPhoneNo, donorEmail, donorRegion, donorDonationType):
+    returnList = []
+    print(tattooDate)
+    returnList.append(donorBloodType)
+    if(donorDonationType == "Blood"):
+        returnList.append(None)
+    else:
+        returnList.append(donorOrgans)
+    returnList.append(donorAge)
+    returnList.append(donorDisease)
+    returnList.append(donorDrugs)
+    if tattooDate:
+        returnList.append("")
+    else:
+        returnList.append(donorLastTattoo)
+    returnList.append(donorMedication)
+    if donatedDate:
+        returnList.append("")
+    else:
+        returnList.append(donorLastDonated)
+    returnList.append(donorPhoneNo)
+    returnList.append(donorEmail)
+    returnList.append(donorRegion)
+    returnList.append(donorDonationType)
+
+    for listItem in range(len(returnList)):
+        if(returnList[listItem] == ""):
+            returnList[listItem] = "NULL"
+    print(returnList)
+    
+    submitNewDonor(root, returnList)
+
 # ---------------------------------Keep At End---------------------------
 if __name__ == '__main__':
     main(root)
