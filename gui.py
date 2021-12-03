@@ -1,3 +1,15 @@
+# CS 425 Final Project
+# By Bryant Schultz, Jared Wagler, and Sean Graney
+#
+# Contributions:
+# Bryant Schultz - Backend MySQL Server and Database.py Python - SQL interfacing library
+# Jared Wagler - Front-end GUI design (gui.py) (Add Donor, Doctor, and Patient forms and SQL additions)
+# Sean Graney - Front-end GUI design (gui.py) (Blood Donor, Organ Donor, and Donor Match Lists; Patient Information, Operation, and Income Report; Login GUI)
+#
+# SQL module used: MySQL
+# Language used: Python
+# Front-end GUI library: Tkinter
+
 from tkinter import*
 from typing import List
 from tkcalendar import*
@@ -99,7 +111,7 @@ def openHome(root):
     b5 = Button(root, text='Donor Match List', width='30', command=lambda:donorMatchList(root)).grid(row=5, column=2)
     b6 = Button(root, text='Income Report', width='30', command=lambda:incomeReport(root)).grid(row=5, column=3)
 
-    b7 = Button(root, text='Opperation Report', width='30', command=lambda:operationReport(root)).grid(row=6, column=1)
+    b7 = Button(root, text='Operation Report', width='30', command=lambda:operationReport(root)).grid(row=6, column=1)
     b8 = Button(root, text='Create Patient User', width='30', command=lambda:addNewPatient(root)).grid(row=6, column=2)
     b9 = Button(root, text='Create Doctor User', width='30', command=lambda:addNewDoctor(root)).grid(row=6, column=3)
 
