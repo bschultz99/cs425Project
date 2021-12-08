@@ -724,22 +724,27 @@ def addNewDonor(root, initialFlag = FALSE):
         entryDonatedBox.grid(row=13, column=1)
         tattooDate = TRUE
         donatedDate = TRUE
-        initialFlag = TRUE
+        global donorDonationType
         donorDonationType = "Blood"
+        initialFlag = TRUE
 
     def expandForm():
+        global donorDonationType
         if(donorRadioSelection.get() == "organs"):
             labelOrgans.grid(row=4, column=0, sticky='e')
             entryOrgans.grid(row=4, column=1)
             donorDonationType = "Organ"
+            print(donorDonationType)
         elif(donorRadioSelection.get() == "both"):
             labelOrgans.grid(row=4, column=0, sticky='e')
             entryOrgans.grid(row=4, column=1)
             donorDonationType = "Both"
+            print(donorDonationType)
         else:
             labelOrgans.grid_remove()
             entryOrgans.grid_remove()
             donorDonationType = "Blood"
+            print(donorDonationType)
         
     Label(root, text='Add new Donor').grid(columnspan=2, row=0)
     Label(root, text='Donor Type ').grid(row=1, column=0, sticky='e')
@@ -767,6 +772,7 @@ def addNewDonor(root, initialFlag = FALSE):
     entryRadioOrgan = Radiobutton(root, text="Organs", variable=donorRadioSelection, value="organs", command=expandForm).grid(row=2, column=1, sticky='w')
     entryRadioOrgan = Radiobutton(root, text="Both", variable=donorRadioSelection, value="both", command=expandForm).grid(row=3, column=1, sticky='w')
 
+    print(donorDonationType)
     # Back Button
     back = Button(root, text="Back", command=lambda:openHome(root)).grid(row=17, column=0)
 
