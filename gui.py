@@ -19,8 +19,9 @@ from Database import*
 connection = server_connection_first()
 create_database(connection)
 connection = server_connection()
+# drop_tables(connection)
 create_tables(connection)
-#populate_tables(connection)
+# populate_tables(connection)
 
 # Adding example Users
 doctor_user(connection)
@@ -70,9 +71,6 @@ def checkLogin(username, password, root):
     user = username.get()
     passw = password.get()
 
-    print("The name is: " + user)
-    print("The password is: " + passw)
-
     # login success
     if (verify_user(connection, user) != [] and passw!=""):
         # set privileges
@@ -103,8 +101,8 @@ def openHome(root):
 
     b0 = Button(root, text='Patient Information', width="30", command=lambda:patientInfo(root)).grid(row=5, column=1)
 
-    b1 = Button(root, text='Blood Donor List', width='30', command=lambda:bloodDonorList(root)).grid(row=4, column=1)
-    b2 = Button(root, text='Organ Donor List', width='30', command=lambda:organDonorList(root)).grid(row=4, column=2)
+    b1 = Button(root, text='Blood Donor List', width='30', command=lambda:organDonorList(root)).grid(row=4, column=1)
+    b2 = Button(root, text='Organ Donor List', width='30', command=lambda:bloodDonorList(root)).grid(row=4, column=2)
     b3 = Button(root, text='Add New Donor', width='30', command=lambda:addNewDonor(root)).grid(row=4, column=3)
 
     b4 = Button(root, text='----------------------------------------------------------------------------------------------------------------------------------------------', width="105").grid(row=3, column=1, columnspan=3)
@@ -407,7 +405,6 @@ def donorFilter(root, lst):
             query=query[:-5]
         query+=";"
         keys.insert(0,"donor_ID")
-        print(query)
         buildTable(root, keys, read_query(connection, query), "red")
 
 
@@ -447,7 +444,6 @@ def donorFilter2(root, lst):
             query=query[:-5]
         query+=";"
         keys.insert(0,"donor_ID")
-        print(query)
         buildTable(root, keys, read_query(connection, query), "green")
 
 
@@ -491,7 +487,6 @@ def matchList(root, v):
     root.destroy()
     root=Tk()
     
-    print(v)
     if v=='1':
         lst = organdonor_matchlist(connection)
         lst.insert(0, ("Donor_ID", "Blood Type", "Organ", "Region", "Patient ID", "Patient Name"))
